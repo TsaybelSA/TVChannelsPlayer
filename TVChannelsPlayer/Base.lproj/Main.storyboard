@@ -1,24 +1,111 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13122.16" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="hAg-m3-WG8">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13104.12"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
-        <scene sceneID="tne-QT-ifu">
+        <!--Navigation Controller-->
+        <scene sceneID="JUC-hS-3nf">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" xcode11CocoaTouchSystemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+                <navigationController id="hAg-m3-WG8" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="6Cu-1c-5Qf">
+                        <rect key="frame" x="0.0" y="59" width="393" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="nCl-uV-azd" kind="relationship" relationship="rootViewController" id="Ekj-Es-TG7"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="75t-wX-VIi" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="-1024" y="-271"/>
+        </scene>
+        <!--Main Screen-->
+        <scene sceneID="p4h-TN-ALz">
+            <objects>
+                <viewController id="nCl-uV-azd" customClass="MainScreen" customModule="TVChannelsPlayer" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="VXY-jN-EpY">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <searchBar contentMode="redraw" searchBarStyle="prominent" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AkJ-NP-D2A" customClass="CustomizableSearchBar" customModule="TVChannelsPlayer" customModuleProvider="target">
+                                <rect key="frame" x="24" y="103" width="345" height="56"/>
+                                <color key="barTintColor" name="mainBackgorundColor"/>
+                                <textInputTraits key="textInputTraits" returnKeyType="done"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="foregroundColor">
+                                        <color key="value" red="0.50196078430000002" green="0.50588235290000005" blue="0.52156862749999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="textFieldBgColor">
+                                        <color key="value" red="0.25098040700000002" green="0.2588235438" blue="0.27450981740000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="image" keyPath="cancelButtonImage" value="crossIcon"/>
+                                    <userDefinedRuntimeAttribute type="image" keyPath="searchImage" value="searchBarIcon"/>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="height">
+                                        <real key="value" value="48"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <outlet property="delegate" destination="nCl-uV-azd" id="1Ue-EW-liA"/>
+                                </connections>
+                            </searchBar>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="QI4-Fe-bOe" userLabel="Top Bar View">
+                                <rect key="frame" x="16" y="159" width="361" height="50"/>
+                                <color key="backgroundColor" name="mainBackgorundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="vX4-gW-giB"/>
+                                </constraints>
+                                <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="cie-xL-Qat">
+                                    <size key="itemSize" width="128" height="128"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells/>
+                            </collectionView>
+                            <scrollView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pAK-GE-sAG">
+                                <rect key="frame" x="0.0" y="210" width="393" height="642"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </scrollView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="IJ3-YQ-RDG"/>
+                        <color key="backgroundColor" name="mainBackgorundColor"/>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="pAK-GE-sAG" secondAttribute="bottom" id="CRc-pf-J0q"/>
+                            <constraint firstItem="AkJ-NP-D2A" firstAttribute="top" secondItem="IJ3-YQ-RDG" secondAttribute="top" id="OmY-C4-Uuv"/>
+                            <constraint firstItem="QI4-Fe-bOe" firstAttribute="leading" secondItem="IJ3-YQ-RDG" secondAttribute="leading" constant="16" id="Smb-0o-0bF"/>
+                            <constraint firstItem="AkJ-NP-D2A" firstAttribute="centerX" secondItem="VXY-jN-EpY" secondAttribute="centerX" id="XHg-Hn-Jx7"/>
+                            <constraint firstItem="IJ3-YQ-RDG" firstAttribute="trailing" secondItem="pAK-GE-sAG" secondAttribute="trailing" id="Xjj-aD-8GQ"/>
+                            <constraint firstItem="IJ3-YQ-RDG" firstAttribute="trailing" secondItem="QI4-Fe-bOe" secondAttribute="trailing" constant="16" id="en2-e7-uCq"/>
+                            <constraint firstItem="pAK-GE-sAG" firstAttribute="leading" secondItem="IJ3-YQ-RDG" secondAttribute="leading" id="g00-1h-avD"/>
+                            <constraint firstItem="QI4-Fe-bOe" firstAttribute="top" secondItem="AkJ-NP-D2A" secondAttribute="bottom" id="vIU-qi-WdQ"/>
+                            <constraint firstItem="pAK-GE-sAG" firstAttribute="top" secondItem="QI4-Fe-bOe" secondAttribute="bottom" constant="1" id="wDx-uX-t8q"/>
+                            <constraint firstItem="AkJ-NP-D2A" firstAttribute="leading" secondItem="IJ3-YQ-RDG" secondAttribute="leading" constant="24" id="zoB-eS-ihU"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="pUs-iX-7f1"/>
+                    <connections>
+                        <outlet property="containerView" destination="pAK-GE-sAG" id="gjZ-f3-vgi"/>
+                        <outlet property="searchBar" destination="AkJ-NP-D2A" id="BVi-JP-4gy"/>
+                        <outlet property="tabItemsCollection" destination="QI4-Fe-bOe" id="GXs-y7-4bo"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="sM0-Cq-Hca" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-245" y="-271"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="crossIcon" width="24" height="24"/>
+        <image name="searchBarIcon" width="18.333333969116211" height="18.333333969116211"/>
+        <namedColor name="mainBackgorundColor">
+            <color red="0.20399999618530273" green="0.20399999618530273" blue="0.2199999988079071" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+        </namedColor>
+    </resources>
 </document>

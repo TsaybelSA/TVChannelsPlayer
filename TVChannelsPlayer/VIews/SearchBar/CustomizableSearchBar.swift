@@ -17,15 +17,17 @@ class CustomizableSearchBar: UISearchBar {
     @IBInspectable var searchImage: UIImage? {
         didSet { setImage(searchImage, for: .search, state: .normal) }
     }
-    
+    var font: UIFont = .systemFont(ofSize: 20)
 
 
     override func draw(_ rect: CGRect) {
         if let textfield = value(forKey: "searchField") as? UITextField {
             textfield.backgroundColor = textFieldBgColor
             textfield.attributedPlaceholder = NSAttributedString(string: textfield.placeholder ?? "",
-                                                attributes: [.foregroundColor : foregroundColor])
+                                                attributes: [.foregroundColor : foregroundColor,
+                                                             .font : font])
             textfield.textColor = foregroundColor
+            textfield.font = font
             
             textfield.translatesAutoresizingMaskIntoConstraints = false
             NSLayoutConstraint.activate([

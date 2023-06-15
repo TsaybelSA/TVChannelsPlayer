@@ -27,7 +27,7 @@ class MainScreen: TabBarContainerViewController {
         didSet { scrollView = containerView }
     }
         
-    @IBOutlet private weak var searchBar: UISearchBar!
+    @IBOutlet private weak var searchBar: CustomizableSearchBar!
         
     var searchInputControllers: [SearchInputable] {
         viewControllers.compactMap({ $0 as? SearchInputable})
@@ -37,6 +37,7 @@ class MainScreen: TabBarContainerViewController {
         super.viewDidLoad()
         
         searchBar.placeholder = "kWriteChannelName".localized
+        searchBar.font = .roboto.regular(16)
         
         addEmptySpaceGesture()
         setupSearchBar()
@@ -65,6 +66,7 @@ class MainScreen: TabBarContainerViewController {
     private func addEmptySpaceGesture() {
         let tapGesture = UITapGestureRecognizer(target: self,
                             action: #selector(stopSearchTextEditing))
+        tapGesture.cancelsTouchesInView = false
         containerView.addGestureRecognizer(tapGesture)
     }
     
@@ -74,15 +76,10 @@ class MainScreen: TabBarContainerViewController {
         searchBar.resignFirstResponder()
     }
     
-    override func moveTo(page: Int, animated: Bool = true) {
-        super.moveTo(page: page, animated: animated)
-        
-        stopSearchTextEditing()
-    }
-    
     override func currentTabDidChanged() {
         guard let controllerWithSearch = searchInputControllers.safelyGetItem(at: currentPage) else { return }
         searchBar.text = controllerWithSearch.searchText
+        stopSearchTextEditing()
     }
 }
 

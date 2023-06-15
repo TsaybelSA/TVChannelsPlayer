@@ -13,7 +13,8 @@ enum HomeScreenTabs: String, CaseIterable {
     var title: String { "k\(self.rawValue.capitalized)".localized }
     
     var assosiatedViewController: UIViewController {
-        ChannelsListVC(assosiatedTab: self)
+        ChannelsListVC(assosiatedTab: self,
+                       favouritesManager: FavouriteChannelsManager.shared)
     }
 }
 

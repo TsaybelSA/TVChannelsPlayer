@@ -17,6 +17,8 @@ class ChannelsListVC: UIViewController {
     // MARK: - Properties
     private let assosiatedTab: HomeScreenTabs
     
+    private let favouritesManager: FavouriteChannelsInterface
+    
     private var _searchText = "" {
         didSet {
             print("searchText", _searchText)
@@ -37,19 +39,22 @@ class ChannelsListVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // FavouriteStateListener method to start listen changes
+        startListenFavouriteStatusChanges()
+        //
+        
         tableView.register(ChannelTableViewCell.nib,
                            forCellReuseIdentifier: ChannelTableViewCell.reuseIdentifier)
         tableView.dataSource = self
         tableView.delegate = self
         
-        tableView.sectionFooterHeight = 10
-        tableView.rowHeight = Size.channelRowHeight
-        
         setupViews()
     }
     
-    init(assosiatedTab: HomeScreenTabs) {
+    init(assosiatedTab: HomeScreenTabs, favouritesManager: FavouriteChannelsInterface) {
         self.assosiatedTab = assosiatedTab
+        self.favouritesManager = favouritesManager
+        
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -59,6 +64,9 @@ class ChannelsListVC: UIViewController {
     
     // MARK: - Setup Views
     private func setupViews() {
+        tableView.sectionFooterHeight = 10
+        tableView.rowHeight = Size.channelRowHeight
+        
         view.addSubview(tableView)
         
         NSLayoutConstraint.activate([
@@ -96,12 +104,14 @@ extension ChannelsListVC: SearchInputable {
     var tabType: HomeScreenTabs { assosiatedTab }
 }
 
+// MARK: - UITableViewDelegate
 extension ChannelsListVC: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 //        print("\(indexPath)")
     }
 }
 
+// MARK: - UITableViewDataSource
 extension ChannelsListVC: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         1
@@ -122,22 +132,21 @@ extension ChannelsListVC: UITableViewDataSource {
                                                      for: indexPath) as? ChannelTableViewCell
         else { return UITableViewCell() }
         
-        cell.channel = array[indexPath.row]
+        let channel = array[indexPath.row]
+        cell.channel = channel
+        
+        cell.isFavourite = favouritesManager.isInFavourites(channel.id)
+        cell.favouriteTapHandler = { [unowned self] channel, isFavourite in
+            self.favouritesManager.setFavouriteState(by: channel.id, isFavourite: isFavourite)
+        }
         cell.updateFavouriteButton()
         return cell
     }
-    
-    @objc
-    private func cellFavouriteButtonTapped(sender: UIButton) {
-        if let cell = tableView.cellForRow(at: IndexPath(item: 0, section: sender.tag)) as? ChannelTableViewCell {
-//            cell.updateFavouriteButton(Bool.random())
-        }
-//        array.safelyGetItem(at: sender.tag)
-    }
 }
 
-//extension ChannelsListVC: ChannelTableViewCellDelegate {
-//    func channelsTableViewCell(_ cell: ChannelTableViewCell, selected channel: Channel) {
-//        print("channel")
-//    }
-//}
+// MARK: - FavouriteStateListener
+extension ChannelsListVC: FavouriteStateListener {
+    func updateChannelsStatus() {
+        tableView.reloadData()
+    }
+}

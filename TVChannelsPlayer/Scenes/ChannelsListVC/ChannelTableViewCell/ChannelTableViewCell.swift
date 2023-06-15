@@ -9,24 +9,26 @@ import UIKit
 
 class ChannelTableViewCell: UITableViewCell {
 
+    // MARK: - Views
     @IBOutlet private weak var channelImageView: UIImageView!
     @IBOutlet private weak var channelTitle: UILabel!
     @IBOutlet private weak var programTitle: UILabel!
     @IBOutlet private weak var favouriteButton: UIButton!
 
+    // MARK: - Properties
     var channel: Channel = .mock {
         didSet { updateInfo() }
     }
     
     var favouriteTapHandler: ((Channel, Bool) -> ())?
 
-    private(set) var isFavourite: Bool = false {
+    var isFavourite: Bool = false {
         didSet {
             updateFavouriteButton()
-            favouriteTapHandler?(channel, isFavourite)
         }
     }
     
+    // MARK: - Lifecycle methods
     override func awakeFromNib() {
         super.awakeFromNib()
         
@@ -35,10 +37,11 @@ class ChannelTableViewCell: UITableViewCell {
     
     // MARK: - Setup Views
     private func setupViews() {
+        selectionStyle = .none
         backgroundColor = .clear
+        
         contentView.backgroundColor = Colors.mainBackgroundColor
         contentView.layer.cornerRadius = 10
-        selectionStyle = .none
         
         channelImageView.layer.cornerRadius = 4
         
@@ -58,6 +61,6 @@ class ChannelTableViewCell: UITableViewCell {
 
     // MARK: - Actions
     @IBAction func favouriteButtonTapped(_ sender: UIButton) {
-        isFavourite.toggle()
+        favouriteTapHandler?(channel, !isFavourite)
     }
 }

@@ -19,13 +19,27 @@ class ChannelsListVC: UIViewController {
     
     private let favouritesManager: FavouriteChannelsInterface
     
+    private let channelsManager: ChannelsManagerInterface
+    
+    private let imageLoader: ImageLoaderInterface
+    
     private var _searchText = "" {
         didSet {
-            print("searchText", _searchText)
+            guard oldValue != _searchText else { return }
+            updateData()
         }
     }
     
-    private var array: [Channel] = [.mock, .mock]
+    private var channels: [Channel] {
+        var channels: [Channel]
+        if assosiatedTab == .favourites {
+            channels = channelsManager.channels.filter({ favouritesManager.isInFavourites($0.id) })
+        } else {
+            channels = channelsManager.channels
+        }
+        
+        return searchText.isEmpty ? channels : channels.filter({ $0.nameRu.contains(searchText) })
+    }
         
     // MARK: - Views
     private var tableView: UITableView = {
@@ -41,7 +55,8 @@ class ChannelsListVC: UIViewController {
         
         // FavouriteStateListener method to start listen changes
         startListenFavouriteStatusChanges()
-        //
+        
+        startListenChannelsUpdate()
         
         tableView.register(ChannelTableViewCell.nib,
                            forCellReuseIdentifier: ChannelTableViewCell.reuseIdentifier)
@@ -51,9 +66,15 @@ class ChannelsListVC: UIViewController {
         setupViews()
     }
     
-    init(assosiatedTab: HomeScreenTabs, favouritesManager: FavouriteChannelsInterface) {
+    init(assosiatedTab: HomeScreenTabs,
+         favouritesManager: FavouriteChannelsInterface,
+         channelsManager: ChannelsManagerInterface,
+         imageLoader: ImageLoaderInterface) {
+        
         self.assosiatedTab = assosiatedTab
         self.favouritesManager = favouritesManager
+        self.channelsManager = channelsManager
+        self.imageLoader = imageLoader
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -75,6 +96,10 @@ class ChannelsListVC: UIViewController {
             tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 25),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
+    }
+    
+    private func updateData() {
+        tableView.reloadData()
     }
 }
 
@@ -118,7 +143,7 @@ extension ChannelsListVC: UITableViewDataSource {
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        array.count
+        channels.count
     }
     
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
@@ -129,24 +154,46 @@ extension ChannelsListVC: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: ChannelTableViewCell.reuseIdentifier,
-                                                     for: indexPath) as? ChannelTableViewCell
+                                                       for: indexPath) as? ChannelTableViewCell,
+              let channel = channels.safelyGetItem(at: indexPath.section)
         else { return UITableViewCell() }
         
-        let channel = array[indexPath.row]
         cell.channel = channel
         
         cell.isFavourite = favouritesManager.isInFavourites(channel.id)
+        
         cell.favouriteTapHandler = { [unowned self] channel, isFavourite in
             self.favouritesManager.setFavouriteState(by: channel.id, isFavourite: isFavourite)
         }
+        getImage(for: cell)
+
         cell.updateFavouriteButton()
         return cell
+    }
+    
+    private func getImage(for cell: ChannelTableViewCell) {
+        DispatchQueue.global(qos: .userInitiated).async {
+            do {
+                try self.imageLoader.getImage(for: cell.channel.image) { loadedImage, imageUrlString in
+                    guard imageUrlString == cell.channel.image else { return }
+                    cell.channelImage = loadedImage
+                }
+            } catch {
+                print(error.localizedDescription)
+            }
+        }
     }
 }
 
 // MARK: - FavouriteStateListener
 extension ChannelsListVC: FavouriteStateListener {
     func updateChannelsStatus() {
-        tableView.reloadData()
+        updateData()
+    }
+}
+
+extension ChannelsListVC: ChannelsUpdateListener {
+    func channelsUpdated() {
+        updateData()
     }
 }

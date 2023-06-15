@@ -14,7 +14,9 @@ enum HomeScreenTabs: String, CaseIterable {
     
     var assosiatedViewController: UIViewController {
         ChannelsListVC(assosiatedTab: self,
-                       favouritesManager: FavouriteChannelsManager.shared)
+                       favouritesManager: FavouriteChannelsManager.shared,
+                       channelsManager: ChannelsManager.shared,
+                       imageLoader: ImageLoader())
     }
 }
 

@@ -20,6 +20,16 @@ class ChannelTableViewCell: UITableViewCell {
         didSet { updateInfo() }
     }
     
+    var channelImage: UIImage? {
+        didSet {
+            DispatchQueue.main.async { [self] in
+                guard channelImageView != nil else { return }
+                
+                channelImageView.image = channelImage
+            }
+        }
+    }
+    
     var favouriteTapHandler: ((Channel, Bool) -> ())?
 
     var isFavourite: Bool = false {
@@ -50,7 +60,7 @@ class ChannelTableViewCell: UITableViewCell {
     }
     
     private func updateInfo() {
-        channelTitle.text = isRuLocale ? channel.name_ru : channel.name_en
+        channelTitle.text = channel.nameRu
         programTitle.text = channel.current.title
     }
 

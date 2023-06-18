@@ -6,6 +6,7 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -30,47 +31,25 @@
                             <action selector="favouriteButtonTapped:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="WLt-VR-iqj"/>
                         </connections>
                     </button>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="72T-3q-Edt">
-                        <rect key="frame" x="92" y="15" width="204" height="21"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <nil key="highlightedColor"/>
-                    </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Q0g-hm-biH">
-                        <rect key="frame" x="92" y="46" width="204" height="21"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                        <color key="textColor" white="1" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <nil key="highlightedColor"/>
-                    </label>
-                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="G3g-nX-QtY">
-                        <rect key="frame" x="10" y="10" width="62" height="62"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <constraints>
-                            <constraint firstAttribute="width" secondItem="G3g-nX-QtY" secondAttribute="height" multiplier="1:1" id="KUw-yA-Qah"/>
-                        </constraints>
-                    </imageView>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RD2-i4-sZA" customClass="ChannelDescriptionView" customModule="TVChannelsPlayer" customModuleProvider="target">
+                        <rect key="frame" x="10" y="10" width="286" height="62"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
                 </subviews>
                 <color key="backgroundColor" name="mainBackgroundColor"/>
                 <constraints>
-                    <constraint firstAttribute="bottom" secondItem="G3g-nX-QtY" secondAttribute="bottom" constant="10" id="05H-UN-j1C"/>
-                    <constraint firstAttribute="bottom" secondItem="Q0g-hm-biH" secondAttribute="bottom" constant="15" id="7rz-fq-R72"/>
-                    <constraint firstItem="G3g-nX-QtY" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="10" id="DZk-tr-dvg"/>
-                    <constraint firstItem="40W-PK-cEg" firstAttribute="leading" secondItem="72T-3q-Edt" secondAttribute="trailing" constant="15" id="HCi-Lo-paK"/>
-                    <constraint firstItem="Q0g-hm-biH" firstAttribute="leading" secondItem="72T-3q-Edt" secondAttribute="leading" id="Jrt-ev-06g"/>
-                    <constraint firstItem="72T-3q-Edt" firstAttribute="leading" secondItem="G3g-nX-QtY" secondAttribute="trailing" constant="20" id="KZy-9X-9TR"/>
-                    <constraint firstItem="G3g-nX-QtY" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="O5Q-Ak-Xcf"/>
-                    <constraint firstItem="Q0g-hm-biH" firstAttribute="trailing" secondItem="72T-3q-Edt" secondAttribute="trailing" id="TEb-BM-oJA"/>
+                    <constraint firstItem="40W-PK-cEg" firstAttribute="leading" secondItem="RD2-i4-sZA" secondAttribute="trailing" constant="15" id="Mz4-eM-p6B"/>
                     <constraint firstAttribute="trailing" secondItem="40W-PK-cEg" secondAttribute="trailing" constant="24" id="awK-9l-ueq"/>
-                    <constraint firstItem="72T-3q-Edt" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="15" id="mhb-f7-LAd"/>
+                    <constraint firstAttribute="bottom" secondItem="RD2-i4-sZA" secondAttribute="bottom" constant="10" id="fb9-ad-D50"/>
+                    <constraint firstItem="RD2-i4-sZA" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="10" id="kWx-gy-fEz"/>
                     <constraint firstItem="40W-PK-cEg" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="sEV-ZD-MF8"/>
+                    <constraint firstItem="RD2-i4-sZA" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="tZB-Om-RYK"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
-                <outlet property="channelImageView" destination="G3g-nX-QtY" id="WNj-e0-dSI"/>
-                <outlet property="channelTitle" destination="72T-3q-Edt" id="YDr-vp-GqB"/>
+                <outlet property="channelDescriptionView" destination="RD2-i4-sZA" id="aLI-Mt-5k8"/>
                 <outlet property="favouriteButton" destination="40W-PK-cEg" id="HfE-bv-DFu"/>
-                <outlet property="programTitle" destination="Q0g-hm-biH" id="QCW-4c-S2w"/>
             </connections>
             <point key="canvasLocation" x="20.610687022900763" y="33.098591549295776"/>
         </tableViewCell>
@@ -80,5 +59,8 @@
         <namedColor name="mainBackgroundColor">
             <color red="0.20399999618530273" green="0.20399999618530273" blue="0.2199999988079071" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
         </namedColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
     </resources>
 </document>

@@ -31,4 +31,5 @@ struct Colors {
 
 struct Size {
     static let channelRowHeight: CGFloat = 76
+    static let navBarHeight: CGFloat = 76
 }

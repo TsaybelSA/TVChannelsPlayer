@@ -7,6 +7,8 @@
 
 import UIKit
 
+var isOnlyLandscape = false
+
 @main
 class AppDelegate : UIResponder, UIApplicationDelegate {
     var window : UIWindow?
@@ -14,5 +16,14 @@ class AppDelegate : UIResponder, UIApplicationDelegate {
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]?) -> Bool {
             return true
     }
+    
+    func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
+
+               if !isOnlyLandscape {
+                    return UIInterfaceOrientationMask.all
+               } else {
+                   return UIInterfaceOrientationMask.landscape
+               }
+       }
 }
 

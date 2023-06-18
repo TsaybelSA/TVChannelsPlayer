@@ -68,9 +68,13 @@
                                 </collectionViewFlowLayout>
                                 <cells/>
                             </collectionView>
-                            <scrollView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pAK-GE-sAG">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="keu-9I-YRh" userLabel="Container View Background">
                                 <rect key="frame" x="0.0" y="210" width="393" height="642"/>
                                 <color key="backgroundColor" name="secondaryBackgroundColor"/>
+                            </view>
+                            <scrollView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pAK-GE-sAG">
+                                <rect key="frame" x="0.0" y="210" width="393" height="642"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </scrollView>
                         </subviews>
@@ -78,7 +82,11 @@
                         <color key="backgroundColor" name="mainBackgorundColor"/>
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="pAK-GE-sAG" secondAttribute="bottom" id="CRc-pf-J0q"/>
+                            <constraint firstItem="keu-9I-YRh" firstAttribute="top" secondItem="pAK-GE-sAG" secondAttribute="top" id="IhP-a8-Wu7"/>
+                            <constraint firstItem="keu-9I-YRh" firstAttribute="bottom" secondItem="pAK-GE-sAG" secondAttribute="bottom" id="NCS-TB-mit"/>
                             <constraint firstItem="AkJ-NP-D2A" firstAttribute="top" secondItem="IJ3-YQ-RDG" secondAttribute="top" id="OmY-C4-Uuv"/>
+                            <constraint firstItem="keu-9I-YRh" firstAttribute="leading" secondItem="VXY-jN-EpY" secondAttribute="leading" id="P7E-VF-C5Z"/>
+                            <constraint firstAttribute="trailing" secondItem="keu-9I-YRh" secondAttribute="trailing" id="RUS-b8-jfJ"/>
                             <constraint firstItem="QI4-Fe-bOe" firstAttribute="leading" secondItem="IJ3-YQ-RDG" secondAttribute="leading" constant="16" id="Smb-0o-0bF"/>
                             <constraint firstItem="AkJ-NP-D2A" firstAttribute="centerX" secondItem="VXY-jN-EpY" secondAttribute="centerX" id="XHg-Hn-Jx7"/>
                             <constraint firstItem="IJ3-YQ-RDG" firstAttribute="trailing" secondItem="pAK-GE-sAG" secondAttribute="trailing" id="Xjj-aD-8GQ"/>
@@ -111,7 +119,7 @@
             <color red="0.20399999618530273" green="0.20399999618530273" blue="0.2199999988079071" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
         </namedColor>
         <namedColor name="secondaryBackgroundColor">
-            <color red="0.13725490870000001" green="0.1411764771" blue="0.15294116739999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+            <color red="0.13699999451637268" green="0.14100000262260437" blue="0.15299999713897705" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
         </namedColor>
     </resources>
 </document>

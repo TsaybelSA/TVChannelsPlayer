@@ -25,7 +25,9 @@ struct Channel: Codable {
         let title: String
     }
     
-    static let mock = Channel(id: 0, nameRu: "Канал для теста", image: "https://assets.iptv2022.com/static/channel/105/logo_256_1655386697.png", current: CurrentProgram(title: "Любая программа"))
+    static let mock = Channel(id: 0, nameRu: "Канал для теста",
+                              image: "https://assets.iptv2022.com/static/channel/105/logo_256_1655386697.png",
+                              current: CurrentProgram(title: "Любая программа"))
 }
 
 

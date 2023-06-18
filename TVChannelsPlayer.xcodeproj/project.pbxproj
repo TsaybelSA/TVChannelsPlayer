@@ -40,6 +40,13 @@
 		17AAF94C2A3AEB0300D4EF53 /* InternetLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17AAF94B2A3AEB0300D4EF53 /* InternetLoader.swift */; };
 		17AAF94E2A3B045E00D4EF53 /* ChannelsLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17AAF94D2A3B045E00D4EF53 /* ChannelsLoader.swift */; };
 		17AAF9502A3B0C5700D4EF53 /* ChannelsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17AAF94F2A3B0C5700D4EF53 /* ChannelsManager.swift */; };
+		17AAF9532A3C867D00D4EF53 /* PlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17AAF9522A3C867D00D4EF53 /* PlayerViewController.swift */; };
+		17AAF9552A3DDECB00D4EF53 /* ChannelDescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17AAF9542A3DDECB00D4EF53 /* ChannelDescriptionView.swift */; };
+		17AAF9582A3DE88600D4EF53 /* PlayerTopBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17AAF9572A3DE88600D4EF53 /* PlayerTopBar.swift */; };
+		17AAF95A2A3DF56100D4EF53 /* DispatchQueueExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17AAF9592A3DF56100D4EF53 /* DispatchQueueExtension.swift */; };
+		17AAF95C2A3EA32E00D4EF53 /* GradientBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17AAF95B2A3EA32E00D4EF53 /* GradientBar.swift */; };
+		17AAF95E2A3EAA9600D4EF53 /* PlayerBottomBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17AAF95D2A3EAA9600D4EF53 /* PlayerBottomBar.swift */; };
+		17AAF9622A3EEDED00D4EF53 /* CustomizableMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17AAF9612A3EEDED00D4EF53 /* CustomizableMenu.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -79,6 +86,13 @@
 		17AAF94B2A3AEB0300D4EF53 /* InternetLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternetLoader.swift; sourceTree = "<group>"; };
 		17AAF94D2A3B045E00D4EF53 /* ChannelsLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelsLoader.swift; sourceTree = "<group>"; };
 		17AAF94F2A3B0C5700D4EF53 /* ChannelsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelsManager.swift; sourceTree = "<group>"; };
+		17AAF9522A3C867D00D4EF53 /* PlayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerViewController.swift; sourceTree = "<group>"; };
+		17AAF9542A3DDECB00D4EF53 /* ChannelDescriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelDescriptionView.swift; sourceTree = "<group>"; };
+		17AAF9572A3DE88600D4EF53 /* PlayerTopBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerTopBar.swift; sourceTree = "<group>"; };
+		17AAF9592A3DF56100D4EF53 /* DispatchQueueExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DispatchQueueExtension.swift; sourceTree = "<group>"; };
+		17AAF95B2A3EA32E00D4EF53 /* GradientBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientBar.swift; sourceTree = "<group>"; };
+		17AAF95D2A3EAA9600D4EF53 /* PlayerBottomBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerBottomBar.swift; sourceTree = "<group>"; };
+		17AAF9612A3EEDED00D4EF53 /* CustomizableMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomizableMenu.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -117,7 +131,7 @@
 				176E548A2A340CE900E70EB7 /* Scenes */,
 				176E548B2A34107A00E70EB7 /* Extensions */,
 				17AAF9422A3ABF3500D4EF53 /* Managers */,
-				176E54942A34843D00E70EB7 /* VIews */,
+				176E54942A34843D00E70EB7 /* Views */,
 				17A775602A3715880055A30A /* Resources */,
 				176E547B2A340B3600E70EB7 /* Main.storyboard */,
 				176E547E2A340B3700E70EB7 /* Assets.xcassets */,
@@ -127,20 +141,21 @@
 			path = TVChannelsPlayer;
 			sourceTree = "<group>";
 		};
-		176E54892A340CD300E70EB7 /* MainScreen */ = {
+		176E54892A340CD300E70EB7 /* Main Scene */ = {
 			isa = PBXGroup;
 			children = (
 				17A775702A380E580055A30A /* TopTabBar */,
 				176E54792A340B3600E70EB7 /* MainScreen.swift */,
 			);
-			path = MainScreen;
+			path = "Main Scene";
 			sourceTree = "<group>";
 		};
 		176E548A2A340CE900E70EB7 /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
-				176E54892A340CD300E70EB7 /* MainScreen */,
+				176E54892A340CD300E70EB7 /* Main Scene */,
 				17A7756D2A3722F60055A30A /* ChannelsListVC */,
+				17AAF9512A3C648500D4EF53 /* Player Scene */,
 			);
 			path = Scenes;
 			sourceTree = "<group>";
@@ -154,6 +169,7 @@
 				17A775852A38276A0055A30A /* UITableViewCellExtension.swift */,
 				17A775892A3827B00055A30A /* UICollectionViewCellExtension.swift */,
 				17AAF9452A3AC47400D4EF53 /* UserDefaultsExtension.swift */,
+				17AAF9592A3DF56100D4EF53 /* DispatchQueueExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -166,20 +182,23 @@
 			path = TabBarCell;
 			sourceTree = "<group>";
 		};
-		176E54942A34843D00E70EB7 /* VIews */ = {
+		176E54942A34843D00E70EB7 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				176E54972A34B38F00E70EB7 /* SearchBar */,
+				17AAF9542A3DDECB00D4EF53 /* ChannelDescriptionView.swift */,
+				17AAF95B2A3EA32E00D4EF53 /* GradientBar.swift */,
+				17AAF9612A3EEDED00D4EF53 /* CustomizableMenu.swift */,
+				176E54972A34B38F00E70EB7 /* Customizable Search Bar */,
 			);
-			path = VIews;
+			path = Views;
 			sourceTree = "<group>";
 		};
-		176E54972A34B38F00E70EB7 /* SearchBar */ = {
+		176E54972A34B38F00E70EB7 /* Customizable Search Bar */ = {
 			isa = PBXGroup;
 			children = (
 				176E54952A34845500E70EB7 /* CustomizableSearchBar.swift */,
 			);
-			path = SearchBar;
+			path = "Customizable Search Bar";
 			sourceTree = "<group>";
 		};
 		17A775602A3715880055A30A /* Resources */ = {
@@ -251,6 +270,24 @@
 				17AAF94F2A3B0C5700D4EF53 /* ChannelsManager.swift */,
 			);
 			path = Managers;
+			sourceTree = "<group>";
+		};
+		17AAF9512A3C648500D4EF53 /* Player Scene */ = {
+			isa = PBXGroup;
+			children = (
+				17AAF9522A3C867D00D4EF53 /* PlayerViewController.swift */,
+				17AAF9562A3DE86C00D4EF53 /* PlayerBars */,
+			);
+			path = "Player Scene";
+			sourceTree = "<group>";
+		};
+		17AAF9562A3DE86C00D4EF53 /* PlayerBars */ = {
+			isa = PBXGroup;
+			children = (
+				17AAF9572A3DE88600D4EF53 /* PlayerTopBar.swift */,
+				17AAF95D2A3EAA9600D4EF53 /* PlayerBottomBar.swift */,
+			);
+			path = PlayerBars;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -336,6 +373,7 @@
 				17A775862A38276A0055A30A /* UITableViewCellExtension.swift in Sources */,
 				176E547A2A340B3600E70EB7 /* MainScreen.swift in Sources */,
 				17A7756F2A3723150055A30A /* ChannelsListVC.swift in Sources */,
+				17AAF95E2A3EAA9600D4EF53 /* PlayerBottomBar.swift in Sources */,
 				17A775762A38112E0055A30A /* Fonts.swift in Sources */,
 				176E54762A340B3600E70EB7 /* AppDelegate.swift in Sources */,
 				17A7756A2A3716220055A30A /* StringExtensions.swift in Sources */,
@@ -343,15 +381,21 @@
 				17AAF9442A3ABF5B00D4EF53 /* FavouriteChannelsManager.swift in Sources */,
 				176E54962A34845500E70EB7 /* CustomizableSearchBar.swift in Sources */,
 				17AAF9482A3AE9C200D4EF53 /* ImageLoader.swift in Sources */,
+				17AAF9622A3EEDED00D4EF53 /* CustomizableMenu.swift in Sources */,
 				17A775832A381E4E0055A30A /* Channel.swift in Sources */,
+				17AAF9582A3DE88600D4EF53 /* PlayerTopBar.swift in Sources */,
 				17AAF9402A387E5000D4EF53 /* ChannelTableViewCell.swift in Sources */,
 				17A7755D2A3712D10055A30A /* ArrayExtension.swift in Sources */,
 				17AAF94E2A3B045E00D4EF53 /* ChannelsLoader.swift in Sources */,
 				17A775572A34CFCF0055A30A /* TabBarContainerViewController.swift in Sources */,
+				17AAF95A2A3DF56100D4EF53 /* DispatchQueueExtension.swift in Sources */,
 				176E54782A340B3600E70EB7 /* SceneDelegate.swift in Sources */,
+				17AAF9532A3C867D00D4EF53 /* PlayerViewController.swift in Sources */,
 				17AAF9462A3AC47400D4EF53 /* UserDefaultsExtension.swift in Sources */,
 				17A775592A36B46E0055A30A /* UIViewExtension.swift in Sources */,
 				17AAF94C2A3AEB0300D4EF53 /* InternetLoader.swift in Sources */,
+				17AAF95C2A3EA32E00D4EF53 /* GradientBar.swift in Sources */,
+				17AAF9552A3DDECB00D4EF53 /* ChannelDescriptionView.swift in Sources */,
 				17AAF9502A3B0C5700D4EF53 /* ChannelsManager.swift in Sources */,
 				176E548E2A34109700E70EB7 /* Constants.swift in Sources */,
 				17A7756C2A3722890055A30A /* TabBarCell.swift in Sources */,

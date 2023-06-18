@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import AVKit
+import AVFoundation
 
 protocol SearchInputable {
     var searchText: String { get }
@@ -132,7 +134,12 @@ extension ChannelsListVC: SearchInputable {
 // MARK: - UITableViewDelegate
 extension ChannelsListVC: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        print("\(indexPath)")
+        guard let selectedChannel = channels.safelyGetItem(at: indexPath.section) else { return }
+        
+        let playerVC = PlayerViewController(channel: selectedChannel,
+                                            imageLoader: imageLoader)
+        
+        navigationController?.pushViewController(playerVC, animated: true)
     }
 }
 

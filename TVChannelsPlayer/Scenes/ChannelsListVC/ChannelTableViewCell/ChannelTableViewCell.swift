@@ -10,28 +10,23 @@ import UIKit
 class ChannelTableViewCell: UITableViewCell {
 
     // MARK: - Views
-    @IBOutlet private weak var channelImageView: UIImageView!
-    @IBOutlet private weak var channelTitle: UILabel!
-    @IBOutlet private weak var programTitle: UILabel!
     @IBOutlet private weak var favouriteButton: UIButton!
 
+    @IBOutlet weak var channelDescriptionView: ChannelDescriptionView!
+    
     // MARK: - Properties
     var channel: Channel = .mock {
-        didSet { updateInfo() }
+        didSet { didSetChannel() }
     }
     
     var channelImage: UIImage? {
         didSet {
-            DispatchQueue.main.async { [self] in
-                guard channelImageView != nil else { return }
-                
-                channelImageView.image = channelImage
-            }
+            channelDescriptionView.channelImage = channelImage
         }
     }
     
     var favouriteTapHandler: ((Channel, Bool) -> ())?
-
+    
     var isFavourite: Bool = false {
         didSet {
             updateFavouriteButton()
@@ -52,16 +47,12 @@ class ChannelTableViewCell: UITableViewCell {
         
         contentView.backgroundColor = Colors.mainBackgroundColor
         contentView.layer.cornerRadius = 10
-        
-        channelImageView.layer.cornerRadius = 4
-        
+                
         updateFavouriteButton()
-        updateInfo()
     }
     
-    private func updateInfo() {
-        channelTitle.text = channel.nameRu
-        programTitle.text = channel.current.title
+    private func didSetChannel() {
+        channelDescriptionView.channel = channel
     }
 
     func updateFavouriteButton() {

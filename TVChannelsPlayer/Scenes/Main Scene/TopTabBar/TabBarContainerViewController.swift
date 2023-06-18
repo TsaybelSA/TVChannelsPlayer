@@ -180,7 +180,9 @@ open class TabBarContainerViewController: UIViewController, TabItemRegister {
     public func moveTo(page: Int, animated: Bool = true) {
         currentPage = page
         self.scrollToPage(page: page, animated: animated)
+        self.tabsCollectionView.selectItem(at: IndexPath(row: page, section: 0), animated: true, scrollPosition: .centeredHorizontally)
         updateIndicatorView()
+        updateItemsSelection()
     }
     
     
@@ -193,6 +195,13 @@ open class TabBarContainerViewController: UIViewController, TabItemRegister {
         
     }
     
+    private func updateItemsSelection() {
+        guard let selectedCellIndexPath = tabsCollectionView.indexPathsForSelectedItems?.first else { return }
+        tabsCollectionView.visibleCells.forEach({ cell in
+            cell.isSelected = false
+        })
+        tabsCollectionView.cellForItem(at: selectedCellIndexPath)?.isSelected = true
+    }
 }
 
 extension TabBarContainerViewController: UIScrollViewDelegate {

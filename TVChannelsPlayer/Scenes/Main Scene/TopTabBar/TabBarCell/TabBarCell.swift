@@ -7,16 +7,6 @@
 
 import UIKit
 
-protocol ReusableView {
-    static var reuseIdentifier: String { get }
-}
-
-extension TabBarCell: ReusableView {
-    static var reuseIdentifier: String {
-        return String(describing: self)
-    }
-}
-
 class TabBarCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
@@ -30,10 +20,18 @@ class TabBarCell: UICollectionViewCell {
         
         setup()
     }
+    private var _isSelected = false
+    override var isSelected: Bool {
+        get { _isSelected }
+        set {
+            _isSelected = newValue
+            setupForState(newValue)
+        }
+    }
     
     lazy var title: UILabel = {
         let title = UILabel()
-        title.textColor = .white
+        title.font = .roboto.bold(16)
         title.translatesAutoresizingMaskIntoConstraints = false
         return title
     }()
@@ -49,5 +47,9 @@ class TabBarCell: UICollectionViewCell {
             title.centerXAnchor.constraint(equalTo: centerXAnchor),
             title.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
+    }
+    
+    private func setupForState(_ isSelected: Bool) {
+        title.textColor = isSelected ? .white : .white.withAlphaComponent(0.5)
     }
 }

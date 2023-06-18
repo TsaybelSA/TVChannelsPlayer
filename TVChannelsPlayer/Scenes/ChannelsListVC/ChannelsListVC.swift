@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import AVKit
+import AVFoundation
 
 protocol SearchInputable {
     var searchText: String { get }
@@ -13,8 +15,69 @@ protocol SearchInputable {
 }
 
 class ChannelsListVC: UIViewController {
-    init(assosiatedTab: HomeScreenTabs) {
+    
+    // MARK: - Properties
+    private let assosiatedTab: HomeScreenTabs
+    
+    private let favouritesManager: FavouriteChannelsInterface
+    
+    private let channelsManager: ChannelsManagerInterface
+    
+    private let imageLoader: ImageLoaderInterface
+    
+    private var _searchText = "" {
+        didSet {
+            guard oldValue != _searchText else { return }
+            updateData()
+        }
+    }
+    
+    private var channels: [Channel] {
+        var channels: [Channel]
+        if assosiatedTab == .favourites {
+            channels = channelsManager.channels.filter({ favouritesManager.isInFavourites($0.id) })
+        } else {
+            channels = channelsManager.channels
+        }
+        
+        return searchText.isEmpty ? channels : channels.filter({ $0.nameRu.contains(searchText) })
+    }
+        
+    // MARK: - Views
+    private var tableView: UITableView = {
+        let tableView = UITableView()
+        tableView.backgroundColor = .clear
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        return tableView
+    }()
+    
+    // MARK: - Lifecycle methods
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        // FavouriteStateListener method to start listen changes
+        startListenFavouriteStatusChanges()
+        
+        startListenChannelsUpdate()
+        
+        tableView.register(ChannelTableViewCell.nib,
+                           forCellReuseIdentifier: ChannelTableViewCell.reuseIdentifier)
+        tableView.dataSource = self
+        tableView.delegate = self
+        
+        setupViews()
+    }
+    
+    init(assosiatedTab: HomeScreenTabs,
+         favouritesManager: FavouriteChannelsInterface,
+         channelsManager: ChannelsManagerInterface,
+         imageLoader: ImageLoaderInterface) {
+        
         self.assosiatedTab = assosiatedTab
+        self.favouritesManager = favouritesManager
+        self.channelsManager = channelsManager
+        self.imageLoader = imageLoader
+        
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -22,41 +85,27 @@ class ChannelsListVC: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private let assosiatedTab: HomeScreenTabs
-    
-    private var _searchText = "" {
-        didSet {
-            print("searchText", _searchText)
-        }
-    }
-        
-    private var tableView: UITableView = {
-        let tableView = UITableView()
-        tableView.backgroundColor = Colors.mainBackgroundColor
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-        return tableView
-    }()
-    
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        setupViews()
-        
-    }
-    
+    // MARK: - Setup Views
     private func setupViews() {
+        tableView.sectionFooterHeight = 10
+        tableView.rowHeight = Size.channelRowHeight
+        
         view.addSubview(tableView)
         
         NSLayoutConstraint.activate([
-            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 5),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -5),
-            tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 10),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
+            tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 25),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
     }
+    
+    private func updateData() {
+        tableView.reloadData()
+    }
 }
 
+// MARK: - TabBarDataSourse
 extension ChannelsListVC: TabBarDataSourse {
     func configureTabCell(collectionView: UICollectionView, for indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TabBarCell.reuseIdentifier,
@@ -71,6 +120,7 @@ extension ChannelsListVC: TabBarDataSourse {
     }
 }
 
+// MARK: - SearchInputable
 extension ChannelsListVC: SearchInputable {
     var searchText: String { _searchText }
     
@@ -79,4 +129,78 @@ extension ChannelsListVC: SearchInputable {
     }
     
     var tabType: HomeScreenTabs { assosiatedTab }
+}
+
+// MARK: - UITableViewDelegate
+extension ChannelsListVC: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let selectedChannel = channels.safelyGetItem(at: indexPath.section) else { return }
+        
+        let playerVC = PlayerViewController(channel: selectedChannel,
+                                            imageLoader: imageLoader)
+        
+        navigationController?.pushViewController(playerVC, animated: true)
+    }
+}
+
+// MARK: - UITableViewDataSource
+extension ChannelsListVC: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        1
+    }
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        channels.count
+    }
+    
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        let view = UIView()
+        view.backgroundColor = .clear
+        return view
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: ChannelTableViewCell.reuseIdentifier,
+                                                       for: indexPath) as? ChannelTableViewCell,
+              let channel = channels.safelyGetItem(at: indexPath.section)
+        else { return UITableViewCell() }
+        
+        cell.channel = channel
+        
+        cell.isFavourite = favouritesManager.isInFavourites(channel.id)
+        
+        cell.favouriteTapHandler = { [unowned self] channel, isFavourite in
+            self.favouritesManager.setFavouriteState(by: channel.id, isFavourite: isFavourite)
+        }
+        getImage(for: cell)
+
+        cell.updateFavouriteButton()
+        return cell
+    }
+    
+    private func getImage(for cell: ChannelTableViewCell) {
+        DispatchQueue.global(qos: .userInitiated).async {
+            do {
+                try self.imageLoader.getImage(for: cell.channel.image) { loadedImage, imageUrlString in
+                    guard imageUrlString == cell.channel.image else { return }
+                    cell.channelImage = loadedImage
+                }
+            } catch {
+                print(error.localizedDescription)
+            }
+        }
+    }
+}
+
+// MARK: - FavouriteStateListener
+extension ChannelsListVC: FavouriteStateListener {
+    func updateChannelsStatus() {
+        updateData()
+    }
+}
+
+extension ChannelsListVC: ChannelsUpdateListener {
+    func channelsUpdated() {
+        updateData()
+    }
 }

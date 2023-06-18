@@ -1,0 +1,16 @@
+/* 
+  Localizable.strings
+  TVChannelsPlayer
+
+  Created by Сергей Цайбель on 12.06.2023.
+  
+*/
+
+// MARK: - Interface
+
+"kAll" = "Все";
+"kFavourites" = "Избранные";
+
+"kWriteChannelName" = "Напишите название телеканала";
+
+"kTimeLeft" = "Осталось %@";

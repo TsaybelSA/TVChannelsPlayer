@@ -16,7 +16,6 @@ class PlayerBottomBar: GradientBar {
     // MARK: - Views
     private var timeLeftLabel: UILabel = {
         let label = UILabel()
-        label.text = "Осталось 100 минут"
         label.font = .roboto.regular(14)
         label.textColor = .white
         return label
@@ -107,6 +106,22 @@ class PlayerBottomBar: GradientBar {
     // public interface method
     func setCurrentTime(_ time: Float) {
         sliderView.setValue(time, animated: false)
+    }
+    
+    func setMinutesLeftValue(_ timeLeft: Int) {
+        guard timeLeft >= 0 else { return }
+        
+        var title = String(format: "kTimeLeft".localized, "\(timeLeft)")
+        if NSLocale.preferredLanguages.first?.split(separator: "-").first == "ru" {
+            let minuteKey: String
+            switch timeLeft % 10 {
+            case 1: minuteKey = timeLeft < 20 && timeLeft > 1 ? "минут" : "минута"
+            case 2...4: minuteKey = timeLeft < 20 && timeLeft > 10 ? "минут" : "минуты"
+            default: minuteKey = "минут"
+            }
+            title += " \(minuteKey)"
+        }
+        timeLeftLabel.text = title
     }
     
     // MARK: - Actions

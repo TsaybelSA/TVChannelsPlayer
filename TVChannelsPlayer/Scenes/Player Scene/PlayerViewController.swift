@@ -8,11 +8,23 @@
 import UIKit
 import AVKit
 
+enum VideoQualityType: String, CaseIterable {
+    case fullHD = "1080p"
+    case hd = "720p"
+    case sd = "480p"
+    case lowSD = "360p"
+    case auto = "AUTO"
+}
+
 class PlayerViewController: UIViewController {
 
     // MARK: - Properties
     private let channel: Channel
     private let imageLoader: ImageLoaderInterface
+    
+    private var player: AVPlayer?
+    private var playerItem: AVPlayerItem?
+    private var currentQuality: VideoQualityType = .auto
     
     private var isShowingInterface = false
     private var isAnimationFinished = true
@@ -44,6 +56,14 @@ class PlayerViewController: UIViewController {
         view.isHidden = true
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
+    }()
+    
+    private var qualityMenu: CustomizableMenu = {
+        let menu = CustomizableMenu(buttonTitles: VideoQualityType.allCases.map({ $0.rawValue }))
+        menu.isHidden = true
+        menu.layer.opacity = 0
+        menu.translatesAutoresizingMaskIntoConstraints = false
+        return menu
     }()
     
     // MARK: - Lifecycle methods
@@ -88,6 +108,7 @@ class PlayerViewController: UIViewController {
     private func setupViews() {
         setupTopBarView()
         setupBottomBarView()
+        setupQualityMenu()
         
         navigationController?.interactivePopGestureRecognizer?.delegate = self
         navigationController?.isNavigationBarHidden = true
@@ -97,9 +118,10 @@ class PlayerViewController: UIViewController {
         
         view.layer.addSublayer(playerLayer)
         view.backgroundColor = Colors.secondaryBackgroundColor
-        view.addSubview(navigationBar)
         
+        view.addSubview(navigationBar)
         view.addSubview(bottomBar)
+        view.addSubview(qualityMenu)
         
         NSLayoutConstraint.activate([
             navigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -109,6 +131,11 @@ class PlayerViewController: UIViewController {
             bottomBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             bottomBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             bottomBar.heightAnchor.constraint(equalToConstant: Size.navBarHeight),
+            
+            qualityMenu.heightAnchor.constraint(equalToConstant: 200),
+            qualityMenu.widthAnchor.constraint(equalToConstant: 128),
+            qualityMenu.bottomAnchor.constraint(equalTo: bottomBar.topAnchor, constant: -20),
+            qualityMenu.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
         ])
         
         topNavBarTopAnchor = navigationBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)
@@ -135,26 +162,81 @@ class PlayerViewController: UIViewController {
     }
     
     private func setupBottomBarView() {
-        bottomBar.settingsButtonAction = {
-            print("show quality set view")
+        bottomBar.settingsButtonAction = { [weak self] in
+            self?.toggleSettingsMenuAppearance()
         }
         
-        bottomBar.moveToTime = { time in
+        bottomBar.moveToTime = { [weak self] time in
             // here code to adjust time for player item
+            
+            self?.bottomBar.setMinutesLeftValue(Int(Float.random(in: 0...100)))
+        }
+        
+        // default info
+        bottomBar.setMinutesLeftValue(Int(Float.random(in: 0...100)))
+    }
+    
+    private func setupQualityMenu() {
+        qualityMenu.buttonActionHandler = { [weak self] title in
+            guard let unwrappedTitle = title, let quality = VideoQualityType(rawValue: unwrappedTitle) else { return }
+            
+            self?.selectQuality(quality)
         }
     }
     
     private func addPlayer() {
+        player = AVPlayer()
+        playerLayer.player = player
+        
+        addPlayerItem()
+    }
+    
+    private func addPlayerItem() {
         // на данный момент используется дефолтный URL,
         // тк в API недействующие ссылки
+        // в реальном проекте в switch добавить quary URL с качеством ??
+        let urlString: String
+        switch currentQuality {
+        default: urlString = "https://sitv.ru/hls/s861024.m3u8"
+        }
+        guard let url = URL(string: urlString) else { return }
         
-//        guard let url = URL(string: "https://sitv.ru/hls/s861024.m3u8") else { return }
-//        let player = AVPlayer(url: url)
-//        playerLayer.player = player
-//        player.play()
+        DispatchQueue.main.async { [self] in
+            let playerItem = AVPlayerItem(url: url)
+            self.playerItem = playerItem
+            
+            player?.replaceCurrentItem(with: playerItem)
+            player?.play()
+        }
     }
     
     // MARK: - Actions
+    
+    private func selectQuality(_ quality: VideoQualityType) {
+        toggleSettingsMenuAppearance()
+        
+        currentQuality = quality
+        addPlayerItem()
+    }
+    
+    private func toggleSettingsMenuAppearance() {
+        guard isAnimationFinished else { return }
+        isAnimationFinished = false
+        
+        let isMenuHidden = qualityMenu.isHidden
+        if isMenuHidden {
+            qualityMenu.isHidden = !isMenuHidden
+        }
+        
+        UIView.animate(withDuration: 0.5) {
+            self.qualityMenu.layer.opacity = isMenuHidden ? 1 : 0
+        } completion: { _ in
+            if !isMenuHidden {
+                self.qualityMenu.isHidden = true
+            }
+            self.isAnimationFinished = true
+        }
+    }
     
     private func showInterface() {
         DispatchQueue.executeOnMain { [self] in
@@ -187,10 +269,12 @@ class PlayerViewController: UIViewController {
                 
                 navigationBar.layer.opacity = 0
                 bottomBar.layer.opacity = 0
+                qualityMenu.layer.opacity = 0
                 self.view.layoutIfNeeded()
             } completion: { _ in
                 self.navigationBar.isHidden = true
                 self.bottomBar.isHidden = true
+                self.qualityMenu.isHidden = true
                 
                 self.isShowingInterface = false
                 self.isAnimationFinished = true

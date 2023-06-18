@@ -12,3 +12,5 @@
 "kFavourites" = "Favourites";
 
 "kWriteChannelName" = "Write the name of the TV channel";
+
+"kTimeLeft" = "%@ minute(-s) left";

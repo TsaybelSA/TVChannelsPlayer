@@ -12,3 +12,5 @@
 "kFavourites" = "Избранные";
 
 "kWriteChannelName" = "Напишите название телеканала";
+
+"kTimeLeft" = "Осталось %@";
